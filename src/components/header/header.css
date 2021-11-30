@@ -1,0 +1,80 @@
+.header {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    color: #fff;
+}
+
+.header-container {
+    width: 90%;
+}
+
+.header__top {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__top-left {
+    width: 16%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__top-right {
+    width: 18%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.example {
+    display: flex;
+}
+
+form.example input[type=text] {
+    background-color: #272727;
+    padding: 5px;
+    font-size: 17px;
+    border: 0.1px solid grey;
+    float: left;
+    width: 80%;
+  }
+  
+  /* Style the submit button */
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background-color: #272727;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+  }
+  
+  form.example button:hover {
+    background: rgba(42, 14, 14, 0.5);
+    border: none;
+  }
+  
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+.header_bottom {
+    padding: 20px;
+    background-color: black;
+}
+
+hr {
+    width: 100vw;
+    margin-left: -6% ;
+}
