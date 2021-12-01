@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import "./header.css";
-
+import { Link } from 'react-router-dom'
 import { AccountCircle } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 import { authContext } from "../../contexts/AuthContext";
 
 const Header = () => {
-  const { user, handleLogOut } = useContext(authContext);
+  const { user: { email }, handleLogOut, isAdmin,} = useContext(authContext);
 
   return (
     <div className="header">
@@ -14,12 +13,12 @@ const Header = () => {
         <div className="header__top">
           <div className="header__top-left">
             <div className="header__top__icon">
-              {/* <Link to="/"> */}
+              <Link to="/">
               <img
                 src={require("../../assets/icons/mers.svg").default}
                 width="50px"
               />
-              {/* </Link> */}
+              </Link>
             </div>
             <div className="header__top__text">
               <h2>Mersedes-Benz</h2>
@@ -28,23 +27,44 @@ const Header = () => {
           </div>
           <div className="header__top-right">
             <div className="header__top-input">
-              <form className="example" action="">
-                <input type="text" placeholder="Search.." name="search" />
-                <button type="submit">
-                  <i className="search"></i>
-                </button>
-              </form>
+            {isAdmin && (
+              <Link to="/admin">
+                <p>Админ панель</p>
+              </Link>
+            )}
             </div>
             <div className="header__top-auth">
-              {user ? (
-                <button onClick={() => handleLogOut()}>logout</button>
-              ): null}
-              <AccountCircle fontSize="medium" />
+            {email ? (
+              <Link to="/auth">
+                <p onClick={handleLogOut}>Выйти</p>
+              </Link>
+            ) : null}
+            {email ? null : (
+              <Link to="/auth">
+                <AccountCircle fontSize="medium" style={{fill: "white"}}/>
+              </Link>
+            )}
             </div>
           </div>
         </div>
         <hr />
-        <div className="header_bottom"></div>
+        <div className="header_bottom">
+            <div className="info">
+                <div className="header-shop">
+                    <Link to="/favorites">
+                        <p>Избранное</p>
+                    </Link>
+                </div>
+                <div className="header__favorites">
+                    <Link to="/list">
+                        <p>Покупка</p>
+                    </Link>
+                </div>
+                <div className="header__cart">
+                    <p>Корзина</p>
+                </div>
+        </div>
+        </div>
       </div>
     </div>
   );

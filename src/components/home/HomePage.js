@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { productsContext } from '../../contexts/ProductContext';
 import './homePage.css'
 
@@ -33,7 +34,9 @@ const HomePage = () => {
                     <div class="container">
                         <h4><b>Mercedes-Benz {item.class}-Класс</b></h4>
                         <p>{item.model}</p>
-                        <button class="button button2">Узнать больше</button>
+                        <Link to='/detailsCLS'>
+                            <button class="button button2">Узнать больше</button>
+                        </Link>
                     </div>
                 </div>
                 ))

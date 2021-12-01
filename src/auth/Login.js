@@ -14,6 +14,7 @@ const Login = () => {
     setHasAccount,
     emailError,
     passwordError,
+    resetPassword
   } = useContext(authContext)
 
   return (
@@ -46,7 +47,7 @@ const Login = () => {
           <p className="errorMsg">{passwordError}</p>
           <div className="btnContainer">
             <div className='reset'>
-              <button>Reset password</button>
+              <button onClick={() => resetPassword()}>Reset password</button>
             </div>
             {hasAccount ? (
               <>

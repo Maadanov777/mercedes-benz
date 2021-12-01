@@ -87,3 +87,16 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+@media all and (max-width: 565px){
+     p{
+        font-size: 15px;
+    }
+
+    .rek-section1__title p{
+        padding: 10px;
+        font-size: 25px;
+        font-weight: 600;
+    }
+    
+}

@@ -70,11 +70,40 @@ form.example input[type=text] {
   }
 
 .header_bottom {
-    padding: 20px;
+    padding: 5px;
     background-color: black;
 }
 
 hr {
     width: 100vw;
     margin-left: -6% ;
+}
+
+.header__top-auth p{
+    color: white
+}
+
+.info {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.info p{
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.info a{
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+@media all and (max-width: 565px){
+    .info p{
+        cursor: pointer;
+        font-size: 15px;
+    }
+    
 }

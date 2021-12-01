@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { productsContext } from '../../contexts/ProductContext';
 
 const EditProduct = ({item}) => {
-    const {editProduct} = useContext(productsContext)
-    const [editedData, setEditedData] = useState(item)
-
+    const {editProduct, edit} = useContext(productsContext)
+    const [editedData, setEditedData] = useState(edit)
+  
+    console.log(edit)
 
     function handleValue(e) {
         let newProduct = {
@@ -20,7 +22,7 @@ const EditProduct = ({item}) => {
 
     return (
         <div>
-            {item ? 
+            {edit ? 
             (<div className='modalAdd'>
             <h2>Основные данные</h2>
             <input placeholder='КЛАСС' value={editedData.class} name='class' onChange={(e) => handleValue(e)}/>
@@ -39,7 +41,9 @@ const EditProduct = ({item}) => {
             <input placeholder='ЭКСТЕРЬЕР 1' value={editedData.exterior.ext_img1} name='ext_img1' onChange={(e) => handleValue(e)} />
             <input placeholder='ЭКСТЕРЬЕР 2' value={editedData.exterior.ext_img1} name='ext_img2' onChange={(e) => handleValue(e)} />
             <input placeholder='ЭКСТЕРЬЕР 3' value={editedData.exterior.ext_img1} name='ext_img3' onChange={(e) => handleValue(e)} />
-            <button onClick={handleAdd}>ДОБАВИТЬ</button>
+            <Link to="/admin">
+              <button onClick={handleAdd}>ДОБАВИТЬ</button>
+            </Link>
             </div>)
  : (<h1>Loading</h1>)}
         </div>

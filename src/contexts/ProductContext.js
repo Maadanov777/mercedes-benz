@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useReducer, useState} from 'react'
 import { db } from '../firebase'
-import {addDoc, collection, doc, getDocs, getDoc, updateDoc} from 'firebase/firestore'
-import { NorthWest } from '@mui/icons-material'
+import {addDoc, collection, doc, getDocs, getDoc, updateDoc, deleteDoc} from 'firebase/firestore'
 export const productsContext = createContext()
 
 const INIT_STATE = {
@@ -26,6 +25,7 @@ const reducer = (state = INIT_STATE, action) => {
 const ProductsContextProvider = ({ children }) => {
 const [state, dispatch] = useReducer(reducer, INIT_STATE)
 const productsCollectionRef = collection(db, "products")
+const [edit, setEdit] = useState()
 
     async function getProduct () {
         const data = await getDocs(productsCollectionRef)
@@ -34,6 +34,12 @@ const productsCollectionRef = collection(db, "products")
             type: 'GET_PRODUCTS',
             payload: products
         })
+    }
+
+    async function handleDelete(id) {
+      const productDoc= doc(db, 'products', id)
+      await deleteDoc(productDoc) 
+      getProduct()
     }
 
     async function getProductByCategory(item) {
@@ -65,6 +71,39 @@ const productsCollectionRef = collection(db, "products")
               })
         })
     }
+//////// Cart ///////
+    // const addProductToCart = (shoes) => {
+    //   try {
+    //     let cart = JSON.parse(localStorage.getItem('cart'))
+    //     if (!cart) {
+    //       cart = {
+    //         shoes: [],
+    //         totalPrice: 0,
+    //       }
+    //     }
+    //     let newProduct = {
+    //       item: shoes,
+    //       count: 1,
+    //       subPrice: 0,
+    //     }
+    //     console.log(cart)
+    //     let filteredCart = cart.shoes.filter((elem) => elem.item.id === shoes.id)
+    //     if (filteredCart.length > 0) {
+    //       cart.shoes = cart.shoes.filter((elem) => elem.item.id !== shoes.id)
+    //     } else {
+    //       cart.shoes.push(newProduct)
+    //     }
+    //     newProduct.subPrice = calcSubPrice(newProduct)
+    //     cart.totalPrice = calcTotalPrice(cart.shoes)
+    //     localStorage.setItem('cart', JSON.stringify(cart))
+    //     dispatch({
+    //       type: 'CHANGE_CART_COUNT',
+    //       payload: cart.shoes.length,
+    //     })
+    //   } catch (e) {
+    //     console.log('. ')
+    //   }
+    // }
 
     async function editProduct(id, product) {
       const productDoc = doc(db, "products", id)
@@ -72,6 +111,51 @@ const productsCollectionRef = collection(db, "products")
        getProduct()
     }
 
+    // const getCart = () => {
+    //   let cart = JSON.parse(localStorage.getItem('cart'))
+    //   if (!cart) {
+    //     cart = {
+    //       shoes: [],
+    //       totalPrice: 0,
+    //     }
+    //   }
+    //   dispatch({
+    //     type: 'GET_CART',
+    //     payload: cart,
+    //   })
+    // }
+  
+    // function changeProductCount(count, id) {
+    //   let cart = JSON.parse(localStorage.getItem('cart'))
+    //   cart.shoes = cart.shoes.map((elem) => {
+    //     if (elem.item.id === id) {
+    //       elem.count = count
+    //       elem.subPrice = calcSubPrice(elem)
+    //     }
+    //     return elem
+    //   })
+    //   cart.totalPrice = calcTotalPrice(cart.shoes)
+    //   localStorage.setItem('cart', JSON.stringify(cart))
+    //   getCart()
+    // }
+  
+    // function removeProductToCart(item) {
+    //   console.log(item, 'aasasasasas')
+    //   let data = JSON.parse(localStorage.getItem('cart'))
+    //   console.log(data, '...........')
+    //   const product = {...data}
+    //   product.shoes = product.shoes.filter(elem => elem.item.id !== item.id)
+    //   console.log(product)
+    //   localStorage.setItem('cart', JSON.stringify(product))
+    //   getCart()
+    //   changeProductCount()
+    // }
+
+    function handleEdit(item) {
+      console.log(item)
+      setEdit(item)
+    }
+///////////////////////////////////////
 
   return (
     <productsContext.Provider
@@ -82,7 +166,10 @@ const productsCollectionRef = collection(db, "products")
           addProduct,
           getCurrentProduct,
           editProduct,
-          getProductByCategory
+          getProductByCategory,
+          handleEdit,
+          edit,
+          handleDelete
       }}
     >
       {children}

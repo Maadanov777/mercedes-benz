@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { productsContext } from '../../contexts/ProductContext';
-import EditProduct from '../editProduct/EditProduct';
-
+import '../../auth/Auth.css'
 
 const Admin = () => {
-    const { getProduct, products } = useContext(productsContext)
-    const [state, setState] = useState(false)
+    const { getProduct, products, handleEdit, handleDelete } = useContext(productsContext)
   
     useEffect(() => {
       getProduct()
@@ -14,31 +13,35 @@ const Admin = () => {
   
     return (
           <>
-            <div className="product-list">
-              <div className="container-product">
-                <div className="cards">
-                {products
-                    .map((item) => (
-                        <div class="wrapper">
-                        <div class="productCard__container">
-                            <img src={item.image} width="100%" height='100%'/>
-                        </div>
-                        <div class="productCard__container-details">
-                            <h3>{item.class}-Класс {item.model}</h3>
-                            <p>{item.price}$</p>
-                        </div>
-                        <div class="productCard__container-buy">
-                              <button onClick={() => setState(true)}></button>
-                        </div>
-                        {state ? <EditProduct item={item}/> : null}
+              <div className="all">
+    <div className="home-container">
+      <div className='addpr'>
+         <h1>ADMIN PANEL</h1>
+         <Link to="add">
+          <h1>ADD PRODUCT</h1>
+        </Link>
+      </div>
+        
+    <div className='cards-home'>
+                {products ? products.map((item, index) => (
+                <div class="card">
+                    <img src={item.image} width='100%'/>
+                    <div class="container">
+                        <h4><b>Mercedes-Benz {item.class}-Класс</b></h4>
+                        <p>{item.model}</p>
+                        <button class="button button2" onClick={() => handleDelete(item.id)}>Удалить</button>
+                        <Link to='/admin/editProduct'>
+                          <button class="button button2" onClick={() => handleEdit(item)}>Edit</button>
+                        </Link>
+                    </div>
                 </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-
-          </>
-        )
-};
+    ))
+                : <p>Loading...</p>  
+                }
+          </div>
+          </div>
+        </div>
+    </>
+)};
 
 export default Admin;

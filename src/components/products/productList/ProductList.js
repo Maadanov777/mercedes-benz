@@ -4,11 +4,14 @@ import { productsContext } from '../../../contexts/ProductContext'
 import './ProductList.css'
 import SideBar from '../../sideBar/SideBar'
 import ReactPaginate from 'react-paginate'
+import { CommentSection } from 'react-comments-section'
+import 'react-comments-section/dist/index.css'
 
 
 const ProductList = () => {
   const { getProduct, products, getProductByCategory} = useContext(productsContext)
   const [page, setPage] = useState(0)
+
 
   const pageCount = Math.ceil(products.length / 6)
 
@@ -29,6 +32,7 @@ const ProductList = () => {
   .slice(pageVisited, pageVisited + productrsPerPage)
     .map((item) => <ProductCard key={item.id} item={item} />)
 
+    
   return (
     <>
     <div>
@@ -38,7 +42,8 @@ const ProductList = () => {
             <hr />
         </div>
         <div className="container-product">
-          <div className="cards">{displayProducts}</div>
+          <div className="cards">{displayProducts}
+        </div>
           <div className="paginate">
           <ReactPaginate 
             previousLabel={'<'}

@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   addDoc,
@@ -46,9 +47,10 @@ const AuthContextProvider = ({ children }) => {
 
   const auth = getAuth();
   const usersCollectionFav = collection(db, "users");
+  // const commentsCollectionFav = collection(db, "comments")
 
 
-  const admins = ["maadanov03@gmail.com", "bekievbeil@gmail.com"];
+  const admins = ["maadanov01@gmail.com"];
 
   async function getUser() {
     if (user) {
@@ -73,7 +75,6 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const handleLogIn = () => {
-    console.log(user)
     clearErrors();
     signInWithEmailAndPassword(auth, email, password).catch((error) => {
       switch (error.code) {
@@ -117,33 +118,23 @@ const AuthContextProvider = ({ children }) => {
     getUser();
   }, [user]);
 
-  //   async function userSet() {
-  //     let user = {
-  //       email: email,
-  //       favorites: [],
-  //     }
-  //     await axios.post(`http://localhost:8001/users`, user)
-  //   }
 
   async function addProductToFavorites(item) {
     let userDoc = doc(db, "users", currentUser.id)
-    const favorites = [...currentUser.favorites];
-    favorites.push(item);
+    const favorites = [...currentUser.favorites, item];
     let obj = {
       user: currentUser.user,
       favorites,
     };
     await updateDoc(userDoc, obj);
-    getProductToFavorites();
   }
 
   async function getProductToFavorites() {
     const data = await getDocs(usersCollectionFav);
-    let favorites = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    let favorites = data.docs.map((doc) => ({ ...doc.data()}));
     dispatch({
       type: "GET_FAVORITES",
       payload: favorites[0],
-      id: favorites[0].id,
     });
   }
 
@@ -152,7 +143,6 @@ const AuthContextProvider = ({ children }) => {
     if(state.favorites.favorites) {
       let userDoc = doc(db, "users", currentUser.id)
       let favorites = state.favorites.favorites.filter(elem => elem.id !== item.id)
-      console.log(favorites)
       let obj = {
         user: currentUser.user,
         favorites,
@@ -161,6 +151,7 @@ const AuthContextProvider = ({ children }) => {
       getProductToFavorites()
     }
   }
+
   const authListener = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -175,6 +166,16 @@ const AuthContextProvider = ({ children }) => {
         setUser('')
         setIsAdmin(false)
       }
+    })
+  }
+
+  function resetPassword() {
+    return sendPasswordResetEmail(auth, email)
+    .then(() => {
+      alert( 'Проверьте почту')
+    })
+    .catch((e) => {
+      alert('Неправильный e-mail')
     })
   }
 
@@ -195,13 +196,13 @@ const AuthContextProvider = ({ children }) => {
     setHasAccount,
     emailError,
     passwordError,
-    // favorites: state.favorites,
+    favorites: state.favorites,
     // userId: state.userId,
     isAdmin,
     addProductToFavorites,
-    favorites: state.favorites,
     getProductToFavorites,
     removeFavorites,
+    resetPassword
   };
 
   return <authContext.Provider value={values}>{children}</authContext.Provider>;
